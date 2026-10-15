@@ -1,0 +1,12 @@
+# This repo is public, so every commit is scanned for secrets before it exists
+# (research/0001, decision 7). Install once per clone: `uv run pre-commit install`.
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.28.0
+    hooks:
+      - id: gitleaks
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.12.2
+    hooks:
+      - id: ruff-check
+      - id: ruff-format

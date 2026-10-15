@@ -1,0 +1,49 @@
+[project]
+name = "llm-catalogue"
+version = "0.1.0"
+description = "Shared, pinned facts about the LLMs Lachlan's apps call: prices, limits and measured behaviour."
+readme = "README.md"
+# 3.12, not 3.13: fitness and wandly run 3.12, and every app installs this.
+requires-python = ">=3.12"
+# None, on purpose. Every app installs this package, so it must cost them nothing
+# but the package itself. The scripts' SDKs live in the `scripts` group below,
+# which consumers never install.
+dependencies = []
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/llm_catalogue"]
+
+[dependency-groups]
+dev = [
+    "pre-commit>=4.0.0",
+    "pytest>=8.3.0",
+    "ruff>=0.12.2",
+]
+# What refresh and the probes need. Kept out of `dev` only so the split is
+# legible; `uv sync` installs both by default.
+scripts = [
+    "anthropic>=0.69.0",
+    "openai>=1.76.0",
+    "pillow>=12.0.0",
+    "requests>=2.32.0",
+]
+
+[tool.uv]
+default-groups = ["dev", "scripts"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# The scripts are a package at the repo root (run as `uv run -m scripts.x`), so
+# their tests import them from there.
+pythonpath = ["."]

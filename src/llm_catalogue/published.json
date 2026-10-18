@@ -74,21 +74,6 @@
     "replaced_by": null,
     "price_source": "https://api.deepinfra.com/models/list"
   },
-  "deepinfra:deepseek-ai/DeepSeek-V4.1-Flash": {
-    "prompt_price_per_mtok": 0.14,
-    "completion_price_per_mtok": 0.42,
-    "cache_read_multiplier": 0.03,
-    "cache_write_multiplier": 1.0,
-    "discount": 0.3,
-    "long_context_above_tokens": null,
-    "long_context_prompt_price_per_mtok": null,
-    "long_context_completion_price_per_mtok": null,
-    "context_tokens": 1048576,
-    "provider_max_output_tokens": null,
-    "deprecated_at": null,
-    "replaced_by": null,
-    "price_source": "https://api.deepinfra.com/models/list"
-  },
   "deepinfra:deepseek-ai/DeepSeek-V4.1-Flash-1017": {
     "prompt_price_per_mtok": 0.098,
     "completion_price_per_mtok": 0.294,

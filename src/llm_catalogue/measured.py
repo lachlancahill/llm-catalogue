@@ -138,37 +138,9 @@ MEASURED: dict[str, dict] = {
             "alternating). Images chat 0038."
         ),
     ),
-    # Probed 2026-09-11 (wandly 0169, used by chat 0037): a real `tool_calls`
-    # finish, reports cost. Sending no effort turns reasoning off (0 chars).
-    #
-    # Hard question, 3 samples a level, reasoning characters:
-    #   unset 0  none 0  minimal 10,165  medium 9,979  high 19,055  max 12,344
-    #   low refused (429 engine_overloaded, 3 of 3)
-    # Off against on is unambiguous. Among the thinking levels nothing separates
-    # at n=3, `max` sat below `high`, so the ladder is `none`/`high`, which is
-    # what 0007's bar supports. Wandly offers `xhigh`/`max` too, on DeepSeek's
-    # documentation rather than a measurement. Its 0102-style campaign (six
-    # samples a cell, four questions) is what would put them here.
-    #
-    # Drops a replayed reasoning block whatever it is told (wandly 0169).
-    # Images described (chat 0038). Temperature 0.5 accepted 2026-10-15 in this
-    # repo; the chat app had inherited it from V4-Flash-0731 unmeasured.
-    "deepinfra:deepseek-ai/DeepSeek-V4.1-Flash": dict(
-        supports_tools=True,
-        supports_temperature=True,
-        supports_images=True,
-        effort_ladder=("none", "high"),
-        unset_effort="off",
-        reasoning_field="reasoning_content",
-        reports_cost=True,
-        preserves_replayed_reasoning=False,
-        measured=(
-            "2026-09-11, wandly 0169: tools, ladder (3 samples a level), replay. Images "
-            "chat 0038. Temperature 2026-10-15, this repo."
-        ),
-    ),
-    # A checkpoint of V4.1-Flash, released 2026-10-17. Its own entry: nothing is
-    # inherited from the September checkpoint above.
+    # A checkpoint of V4.1-Flash, released 2026-10-17, measured from scratch. It
+    # replaced the September checkpoint (`DeepSeek-V4.1-Flash`, wandly 0169) on
+    # 2026-10-18 (research/0005); that entry's measurements are in git.
     #
     # Probed 2026-10-18 in this repo (probe_model.py, probe_images.py): accepts a
     # temperature, a real `tool_calls` finish, reports cost. Sending no effort
@@ -183,7 +155,7 @@ MEASURED: dict[str, dict] = {
     # all three go on the ladder. low against high is the narrow step: 2,472 and
     # 2,482 are the closest pair. Documented levels: low/high/max (DeepSeek's API
     # guide). All 25 runs were correct, `none` included, and none hit the 64,000
-    # ceiling. Unlike the September checkpoint, `low` was served, not a 429.
+    # ceiling. The September checkpoint drew 429s on `low`; this one served it.
     #
     # Drops a replayed reasoning block: 38 prompt tokens with or without it, and
     # neither `thinking` nor `chat_template_kwargs` changes that. Image described

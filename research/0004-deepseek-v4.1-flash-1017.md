@@ -1,7 +1,7 @@
 # 0004 — Adding DeepSeek-V4.1-Flash-1017
 
 - Date: 2026-10-18
-- Status: accepted
+- Status: accepted; its "keep the September entry" is superseded by 0005
 
 ## Context
 

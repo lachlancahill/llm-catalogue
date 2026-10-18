@@ -167,6 +167,41 @@ MEASURED: dict[str, dict] = {
             "chat 0038. Temperature 2026-10-15, this repo."
         ),
     ),
+    # A checkpoint of V4.1-Flash, released 2026-10-17. Its own entry: nothing is
+    # inherited from the September checkpoint above.
+    #
+    # Probed 2026-10-18 in this repo (probe_model.py, probe_images.py): accepts a
+    # temperature, a real `tool_calls` finish, reports cost. Sending no effort
+    # turns reasoning off (0 chars, 5 of 5), as on every DeepSeek checkpoint here.
+    #
+    # Hard question, 5 samples a level, alternating, reasoning characters:
+    #   unset 0  none 0
+    #   low   median  1,471  range  1,283-2,472
+    #   high  median  3,447  range  2,482-23,042
+    #   max   median 30,999  range 26,767-33,766
+    # Each level sits wholly above the one below it (5 of 5 against 5 of 5), so
+    # all three go on the ladder. low against high is the narrow step: 2,472 and
+    # 2,482 are the closest pair. Documented levels: low/high/max (DeepSeek's API
+    # guide). All 25 runs were correct, `none` included, and none hit the 64,000
+    # ceiling. Unlike the September checkpoint, `low` was served, not a 429.
+    #
+    # Drops a replayed reasoning block: 38 prompt tokens with or without it, and
+    # neither `thinking` nor `chat_template_kwargs` changes that. Image described
+    # in full ("green, with a red circle containing the number 47").
+    "deepinfra:deepseek-ai/DeepSeek-V4.1-Flash-1017": dict(
+        supports_tools=True,
+        supports_temperature=True,
+        supports_images=True,
+        effort_ladder=("none", "low", "high", "max"),
+        unset_effort="off",
+        reasoning_field="reasoning_content",
+        reports_cost=True,
+        preserves_replayed_reasoning=False,
+        measured=(
+            "2026-10-18, this repo's probes: tools, temperature, ladder (5 samples a "
+            "level, alternating), replay, images."
+        ),
+    ),
     # Verified 2026-08-22 (chat 0030): accepts a temperature, a real tool call.
     # Thinks with nothing sent (18,355 reasoning chars). No ladder measured.
     # Images described (chat 0038).

@@ -28,11 +28,7 @@ from scripts.common import api_key, configure_logging, openai_compatible_client
 logger = logging.getLogger(__name__)
 
 # --- What to probe. Edit before running. ---------------------------------------
-KEYS = (
-    "deepinfra:XiaomiMiMo/MiMo-V2.6-Pro",
-    "anthropic:claude-opus-5-5",
-    "anthropic:claude-sonnet-5-5",
-)
+KEYS = ("deepinfra:deepseek-ai/DeepSeek-V4.1-Flash-1017",)
 # -------------------------------------------------------------------------------
 
 QUESTION = (

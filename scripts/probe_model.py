@@ -50,11 +50,11 @@ logger = logging.getLogger(__name__)
 
 # --- What to probe. Edit before running. ---------------------------------------
 GATEWAY = "deepinfra"
-MODEL = "XiaomiMiMo/MiMo-V2.6-Pro"
+MODEL = "deepseek-ai/DeepSeek-V4.1-Flash-1017"
 # The levels the model card, the lab and the gateway's page document, found by a
 # web search before running. Empty sweeps unset against `none` alone, which asks
 # "does it think, and can it be told not to".
-DOCUMENTED_EFFORTS: tuple[str, ...] = ()
+DOCUMENTED_EFFORTS: tuple[str, ...] = ("low", "high", "max")
 # The largest output ceiling any app using this model sends (chat 64,000).
 OUTPUT_CEILING = 64_000
 # Five, not three: see the docstring.

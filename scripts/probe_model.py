@@ -49,7 +49,7 @@ from scripts.common import configure_logging, openai_compatible_client
 logger = logging.getLogger(__name__)
 
 # --- What to probe. Edit before running. ---------------------------------------
-GATEWAY = "deepinfra"
+GATEWAY = "together"
 MODEL = "deepseek-ai/DeepSeek-V4.1-Flash-1017"
 # The levels the model card, the lab and the gateway's page document, found by a
 # web search before running. Empty sweeps unset against `none` alone, which asks
@@ -297,7 +297,12 @@ def probe_replay(client) -> None:
         "PRESERVED unasked" if preserved else "DROPPED by the template",
     )
     for name, body in REPLAY_CONTROLS:
-        tokens = prompt_tokens(True, body)
+        # Together reads `thinking` as its own object and 400s without a `type`.
+        try:
+            tokens = prompt_tokens(True, body)
+        except Exception as exc:  # noqa: BLE001 - a refusal is the measurement
+            logger.info("  %s: REJECTED - %s", name, str(exc)[:300])
+            continue
         turns_on = tokens - without > REPLAY_RENDERED_THRESHOLD
         logger.info(
             "  %s: prompt_tokens=%d%s",

@@ -28,7 +28,7 @@ from scripts.common import api_key, configure_logging, openai_compatible_client
 logger = logging.getLogger(__name__)
 
 # --- What to probe. Edit before running. ---------------------------------------
-KEYS = ("deepinfra:deepseek-ai/DeepSeek-V4.1-Flash-1017",)
+KEYS = ("together:deepseek-ai/DeepSeek-V4.1-Flash-1017",)
 # -------------------------------------------------------------------------------
 
 QUESTION = (

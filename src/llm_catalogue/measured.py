@@ -144,7 +144,7 @@ MEASURED: dict[str, dict] = {
     #
     # Probed 2026-10-18 in this repo (probe_model.py, probe_images.py): accepts a
     # temperature, a real `tool_calls` finish, reports cost. Sending no effort
-    # turns reasoning off (0 chars, 5 of 5), as on every DeepSeek checkpoint here.
+    # turns reasoning off (0 chars, 5 of 5), as on every DeepSeek checkpoint on DeepInfra.
     #
     # Hard question, 5 samples a level, alternating, reasoning characters:
     #   unset 0  none 0
@@ -228,6 +228,44 @@ MEASURED: dict[str, dict] = {
         measured=(
             "2026-09-02, wandly 0156: tools, effort screen (1 sample a cell). "
             "Temperature 2026-10-15, this repo."
+        ),
+    ),
+    # Its own entry, measured from scratch: nothing is inherited from the DeepInfra
+    # twin, and two facts differ from it (research/0006).
+    #
+    # Probed 2026-10-20 in this repo (probe_model.py, probe_images.py): accepts a
+    # temperature, a real `tool_calls` finish, reasoning as `reasoning_content`.
+    # Reports tokens and no cost, like every Together entry.
+    #
+    # Hard question, 5 samples a level, alternating, reasoning characters:
+    #   none  0 (5 of 5)
+    #   unset median  3,241  range 1,762-19,404
+    #   low   median  2,343  range   941-11,898
+    #   high  median  4,706  range 2,222-7,453
+    #   max   median 23,346  range 5,136-47,038
+    # Unlike DeepInfra, sending nothing leaves reasoning on. It sits short of `max`
+    # (23 of 25 pairs below it), so unset is `below_max`. `low` does not separate
+    # from `high` (high is longer on only 17 of 25 pairs), so it is not on the
+    # ladder. `max` is longer than `high` on 24 of 25 pairs: the one exception is
+    # max's 5,136 against high's 7,453. All 25 runs were correct, `none` included,
+    # and none hit the 64,000 ceiling.
+    #
+    # Drops a replayed reasoning block: 63 prompt tokens with or without it.
+    # `chat_template_kwargs` changes nothing, and `thinking` is a 400 ("missing
+    # field `type`"): Together reads it as its own object. Image described in full
+    # ("Green background, a red circle, and the number 47.").
+    "together:deepseek-ai/DeepSeek-V4.1-Flash-1017": dict(
+        supports_tools=True,
+        supports_temperature=True,
+        supports_images=True,
+        effort_ladder=("none", "high", "max"),
+        unset_effort="below_max",
+        reasoning_field="reasoning_content",
+        reports_cost=False,
+        preserves_replayed_reasoning=False,
+        measured=(
+            "2026-10-20, this repo's probes: tools, temperature, ladder (5 samples a "
+            "level, alternating), replay, images."
         ),
     ),
     # --- Anthropic ----------------------------------------------------------------

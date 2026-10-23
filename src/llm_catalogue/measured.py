@@ -359,13 +359,25 @@ MEASURED: dict[str, dict] = {
     ),
     # Legal 0022, 2026-10-01: tools work through /v1/responses with reasoning on,
     # and are a 400 on Chat Completions. Its model page documents efforts `low`
-    # to `max`, `medium` by default; the Chat Completions error offers `none`.
+    # to `max`, `medium` by default.
+    #
+    # Wandly, 2026-10-23, on /v1/responses: `none` and `minimal` are a 400
+    # ("Supported values are: 'low', 'medium', 'high', 'xhigh', and 'max'"), and
+    # every one of those five returns a real function call. Unset echoes back as
+    # `effort='medium'`. Replayed reasoning items (encrypted, `store=False`) are
+    # counted as input: 398 prompt tokens without call 1's 371 reasoning tokens
+    # and 771 with them, and on the next user turn 464 against 971, since the
+    # response reports `reasoning.context='all_turns'`.
     "openai:gpt-6.1-sol": dict(
         supports_tools=True,
         tools_need_responses_api=True,
         effort_ladder=("low", "medium", "high", "xhigh", "max"),
         unset_effort="medium",
         reports_cost=False,
-        measured="2026-10-01, legal 0022: tools via /v1/responses; efforts from the model page.",
+        preserves_replayed_reasoning=True,
+        measured=(
+            "2026-10-01, legal 0022: tools via /v1/responses; efforts from the model page. "
+            "2026-10-23, wandly: each level calls tools, none/minimal 400, replay counted."
+        ),
     ),
 }

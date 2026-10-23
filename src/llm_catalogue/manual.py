@@ -62,10 +62,12 @@ MANUAL: dict[str, dict] = {
     # $2 in, $0.10 cached, $2.50 cache write, $10 out; above 272K input tokens,
     # $4 / $0.20 / $5 / $15.
     #
-    # The context window is unmeasured. Legal 0022 read "prompts up to 272k" off
-    # the model page, but the pricing page bills prompts above 272K, so the real
-    # window is larger. 272,000 is the safe floor until an oversized request is
-    # sent: an app refuses a long conversation early instead of 400ing on it.
+    # 922,000 is the model page's "max input tokens" (1,050,000 context, 128,000
+    # output; developers.openai.com/api/docs/models/gpt-6.1-sol, read 2026-10-23).
+    # The 272,000 recorded before was a floor, from legal 0022 reading the
+    # long-context price tier as the window. An oversized request (wandly,
+    # 2026-10-23) returns `context_length_exceeded` without naming a number, so
+    # the page is the source.
     "openai:gpt-6.1-sol": {
         "prompt_price_per_mtok": 2.00,
         "completion_price_per_mtok": 10.00,
@@ -74,7 +76,7 @@ MANUAL: dict[str, dict] = {
         "long_context_above_tokens": 272_000,
         "long_context_prompt_price_per_mtok": 4.00,
         "long_context_completion_price_per_mtok": 15.00,
-        "context_tokens": 272_000,
+        "context_tokens": 922_000,
         **_OPENAI_UNPUBLISHED,
     },
     # $4 in, $0.40 cached, $5 cache write, $20 out; above 272K, $8 / $0.80 / $10

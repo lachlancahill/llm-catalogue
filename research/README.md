@@ -10,6 +10,7 @@ Design decisions and findings for llm-catalogue. Read this first in a new sessio
 - [0004 — Adding DeepSeek-V4.1-Flash-1017](0004-deepseek-v4.1-flash-1017.md): the first model added after the build. Probed fresh on DeepInfra, ladder `none/low/high/max`, 0.51 promo discount, not on Together yet.
 - [0005 — V4.1-Flash-1017 replaces the September checkpoint and becomes the default](0005-v4.1-flash-1017-replaces-september-and-becomes-default.md): the September entry is removed; assistant defaults and every use of the old Flash move to 1017; wandly and legal switch only after their quality harnesses pass.
 - [0006 — V4.1-Flash-1017 on Together](0006-v4.1-flash-1017-on-together.md): probed fresh on Together. Unset is **on** (unlike DeepInfra), ladder `none/high/max` (`low` doesn't separate), no cost reported, 3-4x DeepInfra's price.
+- [0007 — GPT-6.1 Sol: the real window, and replay measured](0007-gpt-6.1-sol-window-and-replay.md): `context_tokens` 272,000 → 922,000 off the model page (the floor made wandly's thread ceiling negative); `none`/`minimal` 400, all five levels call tools; replayed encrypted reasoning is counted as input, across turns too.
 
 ## Debug notes
 

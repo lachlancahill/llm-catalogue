@@ -115,8 +115,13 @@ class CatalogModel:
     # Whether each response carries the provider's own billed figure
     # (DeepInfra's `usage.estimated_cost`).
     reports_cost: bool | None = None
-    # Whether a replayed `reasoning_content` reaches the prompt with no extra
-    # controls sent (wandly 0141).
+    # Whether reasoning sent back with the next request reaches the prompt with
+    # no extra controls sent: a replayed `reasoning_content` on the OpenAI-
+    # compatible gateways (wandly 0141), OpenAI's encrypted reasoning items with
+    # `store=False` (0007), Anthropic's signed thinking blocks (0008). Measured by
+    # the prompt count moving. On OpenAI and Anthropic what streams is only a
+    # summary, so replay is the one way the model sees its own earlier reasoning
+    # between tool calls.
     preserves_replayed_reasoning: bool | None = None
     # Provenance: date, script, samples and the note the measurement came from.
     measured: str = ""

@@ -284,6 +284,12 @@ MEASURED: dict[str, dict] = {
     #   forced tool_choice     400 'type "tool" and "any" are not supported for
     #                          this model'. No app sends it; recorded so none starts.
     #   image                  "Green background, red circle, number 47."
+    #
+    # Replay (chat 0057, 2026-10-26, effort `high`, `display="summarized"`): signed
+    # thinking blocks resent in front of their tool_use blocks are accepted and
+    # counted - the follow-up's prompt without / with them: Opus 701/735, Sonnet
+    # 730/780, 742/795 and 762/825. Leaving them out is accepted too, so an app
+    # that drops them fails silently, not loudly.
     "anthropic:claude-opus-5-5": dict(
         supports_tools=True,
         supports_temperature=False,
@@ -294,9 +300,11 @@ MEASURED: dict[str, dict] = {
         unset_effort="medium",
         reasoning_field="thinking",
         reports_cost=False,
+        preserves_replayed_reasoning=True,
         measured=(
             "2026-10-15: Models API capability tree; this repo's probes for temperature, "
-            "tools, forced tool_choice and images; unset level from chat 0048."
+            "tools, forced tool_choice and images; unset level from chat 0048. "
+            "Replay of signed thinking, chat 0057."
         ),
     ),
     "anthropic:claude-sonnet-5-5": dict(
@@ -309,9 +317,11 @@ MEASURED: dict[str, dict] = {
         unset_effort="high",
         reasoning_field="thinking",
         reports_cost=False,
+        preserves_replayed_reasoning=True,
         measured=(
             "2026-10-15: Models API capability tree; this repo's probes for temperature, "
-            "tools, forced tool_choice and images; unset level from chat 0048."
+            "tools, forced tool_choice and images; unset level from chat 0048. "
+            "Replay of signed thinking, chat 0057."
         ),
     ),
     # --- OpenAI -------------------------------------------------------------------
@@ -323,39 +333,66 @@ MEASURED: dict[str, dict] = {
     #
     # Effort values were probed by request (chat 0018): `minimal` and `max` are
     # rejected, `none` accepted, and Luna has no `xhigh`. Images: all four
-    # described the test image (chat 0038). Tools on /v1/responses have not been
-    # measured on the 5.6 line, so `supports_tools` stays unmeasured.
+    # described the test image (chat 0038).
+    #
+    # On /v1/responses (chat 0057, 2026-10-26, effort `high`, `store=False`): all
+    # four return three parallel function calls with reasoning on, and a reasoning
+    # summary streams with `summary="auto"`. Replayed encrypted reasoning items are
+    # counted as input - the follow-up's prompt, without the items / with them:
+    # Luna 211/248, Terra 211/240, Sol 212/250 and 212/225, GPT-5.5 211/280 - and
+    # the follow-up's output fell with them on all but Luna (GPT-5.5 201 -> 41).
+    # One sample each, two on Sol, whose first sample did no reasoning.
     "openai:gpt-5.6-sol": dict(
         supports_temperature=False,
         supports_images=True,
+        supports_tools=True,
         tools_need_responses_api=True,
         effort_ladder=("none", "low", "medium", "high", "xhigh"),
         reports_cost=False,
-        measured="2026-07-19, chat 0018: temperature, efforts, tools. Images chat 0038.",
+        preserves_replayed_reasoning=True,
+        measured=(
+            "2026-07-19, chat 0018: temperature, efforts, tools. Images chat 0038. "
+            "Tools and replay on /v1/responses, chat 0057."
+        ),
     ),
     "openai:gpt-5.6-terra": dict(
         supports_temperature=False,
         supports_images=True,
+        supports_tools=True,
         tools_need_responses_api=True,
         effort_ladder=("none", "low", "medium", "high", "xhigh"),
         reports_cost=False,
-        measured="2026-07-19, chat 0018: temperature, efforts, tools. Images chat 0038.",
+        preserves_replayed_reasoning=True,
+        measured=(
+            "2026-07-19, chat 0018: temperature, efforts, tools. Images chat 0038. "
+            "Tools and replay on /v1/responses, chat 0057."
+        ),
     ),
     "openai:gpt-5.6-luna": dict(
         supports_temperature=False,
         supports_images=True,
+        supports_tools=True,
         tools_need_responses_api=True,
         effort_ladder=("none", "low", "medium", "high"),
         reports_cost=False,
-        measured="2026-07-19, chat 0018: temperature, efforts, tools. Images chat 0038.",
+        preserves_replayed_reasoning=True,
+        measured=(
+            "2026-07-19, chat 0018: temperature, efforts, tools. Images chat 0038. "
+            "Tools and replay on /v1/responses, chat 0057."
+        ),
     ),
     "openai:gpt-5.5": dict(
         supports_temperature=False,
         supports_images=True,
+        supports_tools=True,
         tools_need_responses_api=True,
         effort_ladder=("none", "low", "medium", "high", "xhigh"),
         reports_cost=False,
-        measured="2026-07-19, chat 0018: temperature, efforts, tools. Images chat 0038.",
+        preserves_replayed_reasoning=True,
+        measured=(
+            "2026-07-19, chat 0018: temperature, efforts, tools. Images chat 0038. "
+            "Tools and replay on /v1/responses, chat 0057."
+        ),
     ),
     # Legal 0022, 2026-10-01: tools work through /v1/responses with reasoning on,
     # and are a 400 on Chat Completions. Its model page documents efforts `low`

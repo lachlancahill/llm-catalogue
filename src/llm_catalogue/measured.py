@@ -405,7 +405,12 @@ MEASURED: dict[str, dict] = {
     # counted as input: 398 prompt tokens without call 1's 371 reasoning tokens
     # and 771 with them, and on the next user turn 464 against 971, since the
     # response reports `reasoning.context='all_turns'`.
+    #
+    # 2026-10-27, this repo (research/0009): temperature 0.5 is a 400 ("Unsupported
+    # parameter: 'temperature'"), and the test image was described in full.
     "openai:gpt-6.1-sol": dict(
+        supports_temperature=False,
+        supports_images=True,
         supports_tools=True,
         tools_need_responses_api=True,
         effort_ladder=("low", "medium", "high", "xhigh", "max"),
@@ -414,7 +419,31 @@ MEASURED: dict[str, dict] = {
         preserves_replayed_reasoning=True,
         measured=(
             "2026-10-01, legal 0022: tools via /v1/responses; efforts from the model page. "
-            "2026-10-23, wandly: each level calls tools, none/minimal 400, replay counted."
+            "2026-10-23, wandly: each level calls tools, none/minimal 400, replay counted. "
+            "2026-10-27, 0009: temperature 400, images."
+        ),
+    ),
+    # 2026-10-27, this repo (research/0009), on /v1/responses with `store=False`,
+    # one sample each. Unlike Sol, Terra accepts `none`: it calls tools with 0
+    # reasoning tokens. `minimal` is a 400 ("Supported values are: 'none', 'low',
+    # 'medium', 'high', 'xhigh', and 'max'"). Each of those six returned three
+    # parallel function calls; reasoning tokens 0 / 17 / 20 / 33 / 101 / 158, and
+    # unset echoed back as `medium` (22). Temperature 0.5 is a 400; the test image
+    # was described in full. On Chat Completions, tools with an effort are a 400.
+    # Replayed encrypted reasoning is counted as input: the follow-up's prompt was
+    # 194 without call 1's 25 reasoning tokens and 221 with them.
+    "openai:gpt-6.1-terra": dict(
+        supports_temperature=False,
+        supports_images=True,
+        supports_tools=True,
+        tools_need_responses_api=True,
+        effort_ladder=("none", "low", "medium", "high", "xhigh", "max"),
+        unset_effort="medium",
+        reports_cost=False,
+        preserves_replayed_reasoning=True,
+        measured=(
+            "2026-10-27, 0009: efforts, tools and replay on /v1/responses; temperature, "
+            "images, Chat Completions tools 400."
         ),
     ),
 }

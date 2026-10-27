@@ -12,6 +12,7 @@ Design decisions and findings for llm-catalogue. Read this first in a new sessio
 - [0006 — V4.1-Flash-1017 on Together](0006-v4.1-flash-1017-on-together.md): probed fresh on Together. Unset is **on** (unlike DeepInfra), ladder `none/high/max` (`low` doesn't separate), no cost reported, 3-4x DeepInfra's price.
 - [0007 — GPT-6.1 Sol: the real window, and replay measured](0007-gpt-6.1-sol-window-and-replay.md): `context_tokens` 272,000 → 922,000 off the model page (the floor made wandly's thread ceiling negative); `none`/`minimal` 400, all five levels call tools; replayed encrypted reasoning is counted as input, across turns too.
 - [0008 — Tools and reasoning replay on the frontier gateways](0008-frontier-reasoning-replay.md): the four OpenAI models call tools with reasoning on through `/v1/responses` (`supports_tools=True`); encrypted items and Anthropic's signed thinking, resent between tool calls, are counted as input on all six models (`preserves_replayed_reasoning=True`). Anthropic also accepts the loop with them left out, so dropping them fails silently.
+- [0009 — GPT-6.1 Terra, and Sol's images and temperature](0009-gpt-6.1-terra.md): `openai:gpt-6.1-terra` added, $1 / $5, 922,000 window, ladder `none` to `max` (Sol rejects `none`), temperature 400, images, replay counted. Sol gains `supports_images=True` and `supports_temperature=False`. No 6.1 Luna exists. GLM-5.3-Flash's promotion ended.
 
 ## Debug notes
 

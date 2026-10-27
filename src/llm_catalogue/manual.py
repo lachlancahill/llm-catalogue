@@ -79,6 +79,23 @@ MANUAL: dict[str, dict] = {
         "context_tokens": 922_000,
         **_OPENAI_UNPUBLISHED,
     },
+    # $1 in, $0.05 cached, $1.25 cache write (30 min), $5 out; above 272K input
+    # tokens, $2 / $0.10 / $2.50 / $7.50 (pricing page, read 2026-10-27).
+    #
+    # 922,000 is the model page's "max input tokens" (1,050,000 context, 128,000
+    # output; developers.openai.com/api/docs/models/gpt-6.1-terra, read 2026-10-27),
+    # the same window as GPT-6.1 Sol.
+    "openai:gpt-6.1-terra": {
+        "prompt_price_per_mtok": 1.00,
+        "completion_price_per_mtok": 5.00,
+        "cache_read_multiplier": 0.05,
+        "cache_write_multiplier": 1.25,
+        "long_context_above_tokens": 272_000,
+        "long_context_prompt_price_per_mtok": 2.00,
+        "long_context_completion_price_per_mtok": 7.50,
+        "context_tokens": 922_000,
+        **_OPENAI_UNPUBLISHED,
+    },
     # $4 in, $0.40 cached, $5 cache write, $20 out; above 272K, $8 / $0.80 / $10
     # / $30. Was $5 / $30 when the chat app last read it, on 2026-07-20.
     "openai:gpt-5.6-sol": {

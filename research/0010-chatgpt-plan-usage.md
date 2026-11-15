@@ -33,7 +33,30 @@ organisation's key, so what they measure stays the API.
   the key loses its earlier reasoning with no error, the same silent drop 0008 records for
   Anthropic.
 
+## Measured since, by the apps (2026-11-15)
+
+Three apps now ask the plan first. Their probes found four more things, none of them a
+field here, and two of them the first real differences from the API:
+
+- **`gpt-5.5` is not served on the plan**: 400, "not supported when using Codex with a
+  ChatGPT account". `gpt-6.1-sol`, `gpt-6.1-terra` and `gpt-5.6-luna` are, at every effort
+  on their ladders, with tools and images.
+- **`input` must be a list** on the plan (400, "Input must be a list"); the API takes a string.
+- **Sol at `high` reasoned about 40% as much on the plan**: mean 62 reasoning tokens against
+  160 on the key, ten samples a side on one app's own request, after three a side elsewhere
+  pointed the same way. Answer quality on each side is not measured.
+- **The plan reported no prompt-cache hit** on ten identical 1,899-token requests in that
+  probe, where the key hit nine of nine. An earlier probe saw one hit on a 2,751-token
+  prompt, so this is "not reliably", not "never".
+
 ## Consequences
 
 If the plan ever diverges from the API on a catalogued fact (a level refused, replay dropped),
 that is the point to add a gateway, measured by its own probe.
+
+**That point may have arrived, and the decision is Lachlan's.** A model the plan does not
+serve, and an effort level that reasons less, are differences in kind from what this note
+assumed. The apps cope without a gateway (the app with `gpt-5.5` keeps a list of models
+the plan refuses), and the hand-over for this work said to keep keying models `openai:`,
+so nothing was added. The case for a `chatgpt:` gateway now is that "which models the plan
+serves" is being recorded in an app instead of here.

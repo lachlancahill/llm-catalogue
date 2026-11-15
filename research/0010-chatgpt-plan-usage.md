@@ -45,9 +45,16 @@ field here, and two of them the first real differences from the API:
 - **Sol at `high` reasoned about 40% as much on the plan**: mean 62 reasoning tokens against
   160 on the key, ten samples a side on one app's own request, after three a side elsewhere
   pointed the same way. Answer quality on each side is not measured.
-- **The plan reported no prompt-cache hit** on ten identical 1,899-token requests in that
-  probe, where the key hit nine of nine. An earlier probe saw one hit on a 2,751-token
-  prompt, so this is "not reliably", not "never".
+- **The plan's prompt cache only hits reliably with a `session_id` header.** A bare plan
+  request, repeated five times at each of four prompt sizes (1,200 to 9,000 tokens), hit
+  the cache on about 2 of 32 repeats; the key hit 31 of 32. `prompt_cache_key` and spacing
+  the calls changed nothing. With one `session_id` header on every request (what OpenAI's
+  Codex client sends; not in the plan-usage docs) the plan hit 24 of 31, in blocks of 128
+  tokens. One id serves interleaved prompts; a second id warms its own cache. The shared
+  package now sends one id per process.
+- **`gpt-5.5` has since been retired from the one app that offered it**, as obsolete. Its
+  entry stays here: it is still a measured API model, and an app's locked catalogue would
+  not notice its removal until it next re-locked.
 
 ## Consequences
 

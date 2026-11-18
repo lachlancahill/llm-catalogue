@@ -79,6 +79,41 @@ MANUAL: dict[str, dict] = {
         "context_tokens": 922_000,
         **_OPENAI_UNPUBLISHED,
     },
+    # The same prices and window as GPT-6.1 Sol: $2 in, $0.10 cached, $2.50 cache
+    # write (30 min), $10 out; above 272K input tokens, $4 / $0.20 / $5 / $15
+    # (pricing page, read 2026-11-18). 922,000 is the model page's "max input
+    # tokens" (1,050,000 context, 128,000 output;
+    # developers.openai.com/api/docs/models/gpt-6.2-sol, read 2026-11-18).
+    "openai:gpt-6.2-sol": {
+        "prompt_price_per_mtok": 2.00,
+        "completion_price_per_mtok": 10.00,
+        "cache_read_multiplier": 0.05,
+        "cache_write_multiplier": 1.25,
+        "long_context_above_tokens": 272_000,
+        "long_context_prompt_price_per_mtok": 4.00,
+        "long_context_completion_price_per_mtok": 15.00,
+        "context_tokens": 922_000,
+        **_OPENAI_UNPUBLISHED,
+        # Read later than the shared OPENAI_PRICING date, so dated on its own.
+        "price_source": "https://developers.openai.com/api/docs/pricing, read 2026-11-18",
+    },
+    # $8 in, $0.40 cached, $10 cache write (30 min), $40 out; above 272K input
+    # tokens, $16 / $0.80 / $20 / $60 (pricing page and model page, read
+    # 2026-11-18). Four times GPT-6.2 Sol. 922,000 is the model page's "max input
+    # tokens" (1,050,000 context, 128,000 output;
+    # developers.openai.com/api/docs/models/gpt-6.2-astra, read 2026-11-18).
+    "openai:gpt-6.2-astra": {
+        "prompt_price_per_mtok": 8.00,
+        "completion_price_per_mtok": 40.00,
+        "cache_read_multiplier": 0.05,
+        "cache_write_multiplier": 1.25,
+        "long_context_above_tokens": 272_000,
+        "long_context_prompt_price_per_mtok": 16.00,
+        "long_context_completion_price_per_mtok": 60.00,
+        "context_tokens": 922_000,
+        **_OPENAI_UNPUBLISHED,
+        "price_source": "https://developers.openai.com/api/docs/pricing, read 2026-11-18",
+    },
     # $1 in, $0.05 cached, $1.25 cache write (30 min), $5 out; above 272K input
     # tokens, $2 / $0.10 / $2.50 / $7.50 (pricing page, read 2026-10-27).
     #

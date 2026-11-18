@@ -423,6 +423,51 @@ MEASURED: dict[str, dict] = {
             "2026-10-27, 0009: temperature 400, images."
         ),
     ),
+    # 2026-11-18, this repo (research/0011), on /v1/responses with `store=False`,
+    # one sample each: the same as GPT-6.1 Sol on every fact measured. `none` and
+    # `minimal` are a 400 ("Supported values are: 'low', 'medium', 'high', 'xhigh',
+    # and 'max'"); each of those five returned three parallel function calls,
+    # reasoning tokens 0 / 6 / 15 / 21 / 110, and unset echoed back as `medium` (6).
+    # Temperature 0.5 is a 400; the test image was described in full. On Chat
+    # Completions, tools with an effort are a 400. Replayed encrypted reasoning is
+    # counted as input: the follow-up's prompt was 200 without call 1's 15
+    # reasoning tokens and 217 with them, and `reasoning.context='all_turns'`.
+    "openai:gpt-6.2-sol": dict(
+        supports_temperature=False,
+        supports_images=True,
+        supports_tools=True,
+        tools_need_responses_api=True,
+        effort_ladder=("low", "medium", "high", "xhigh", "max"),
+        unset_effort="medium",
+        reports_cost=False,
+        preserves_replayed_reasoning=True,
+        measured=(
+            "2026-11-18, 0011: efforts, tools and replay on /v1/responses; temperature, "
+            "images, Chat Completions tools 400."
+        ),
+    ),
+    # 2026-11-18, this repo (research/0012), the same probe as GPT-6.2 Sol and the
+    # same result on every fact: `none` and `minimal` are a 400 naming `low` to
+    # `max`; each of those five returned three parallel function calls, reasoning
+    # tokens 0 / 6 / 9 / 15 / 19, and unset echoed back as `medium` (0). Temperature
+    # 0.5 is a 400; the test image was described in full. On Chat Completions,
+    # tools with an effort are a 400. Replayed reasoning is counted as input: the
+    # follow-up's prompt was 200 without call 1's 9 reasoning tokens and 211 with
+    # them, and `reasoning.context='all_turns'`. Also served on the ChatGPT plan.
+    "openai:gpt-6.2-astra": dict(
+        supports_temperature=False,
+        supports_images=True,
+        supports_tools=True,
+        tools_need_responses_api=True,
+        effort_ladder=("low", "medium", "high", "xhigh", "max"),
+        unset_effort="medium",
+        reports_cost=False,
+        preserves_replayed_reasoning=True,
+        measured=(
+            "2026-11-18, 0012: efforts, tools and replay on /v1/responses; temperature, "
+            "images, Chat Completions tools 400."
+        ),
+    ),
     # 2026-10-27, this repo (research/0009), on /v1/responses with `store=False`,
     # one sample each. Unlike Sol, Terra accepts `none`: it calls tools with 0
     # reasoning tokens. `minimal` is a 400 ("Supported values are: 'none', 'low',
